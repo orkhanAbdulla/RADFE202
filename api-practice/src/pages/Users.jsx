@@ -1,6 +1,6 @@
 import { Layout } from "../components/Layout";
 import { Row, Col,Table,Spinner } from "reactstrap";
-import axios  from "axios";
+import { baseService } from "../axios/baseService";
 import { UserData } from "../components/UsersData";
 import { useEffect, useState } from "react";
 
@@ -18,18 +18,14 @@ export const Users = () => {
       error: undefined,
       data: undefined,
     }));
-
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then(({ data }) => {
-        setDatas((oldData) => ({
-          ...oldData,
-          data: data,
-          loading: false,
-          error: undefined,
-        }));
-      })
-      .catch((err) => {
+    baseService.getAll('users').then(( data ) => {
+      setDatas((oldData) => ({
+        ...oldData,
+        data: data,
+        loading: false,
+        error: undefined,
+      }));
+    }).catch((err) => {
         setDatas({ data: undefined, loading: false, error: err.toString() });
       });
   }, []);
